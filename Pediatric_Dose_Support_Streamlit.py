@@ -17,14 +17,14 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 
 dl = pd.read_csv(url)
 
-st.set_page_config(page_title="BarnAnestesi LÃ¤kemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
-st.title('BarnAnestesi LÃ¤kemedel')
+st.set_page_config(page_title="BarnAnestesi L�kemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
+st.title('BarnAnestesi L�kemedel')
 st.write("""
-Du kan ocksÃ¥ vÃ¤lja att anvÃ¤nda den mer uppdaterade Google Sheets versionen pÃ¥:
+Du kan ocks� v�lja att anv�nda den mer uppdaterade Google Sheets versionen p�:
   https://docs.google.com/spreadsheets/d/1xiBoyy-YyNT0KiVGM4BVH8W0K-Oziw4MnZrlbl9fRvg/edit#gid=0
 
-BÃ¥da filer Ã¤r BETA-versioner. Ansvarig anestesiolog har till syvende och sist ansvaret fÃ¶r rÃ¤tta ordinationer
-Fel kan finnas berÃ¤kningarna!
+B�da filerna �r BETA-versioner!. Ansvarig anestesiolog har till syvende och sist ansvaret f�r korrekta ordinationer!
+Fel kan finnas ber�kningarna!
 """)
 
 #print("Beta version 1. Not to be used in production! No liability will be assumed!")
