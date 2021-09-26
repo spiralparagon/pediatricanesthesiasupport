@@ -18,7 +18,7 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 dl = pd.read_csv(url)
 
 st.set_page_config(page_title="BarnAnestesi Läkemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
-st.title('BarnAnestesi Läkemedel')
+st.title('BarnAnestesi Läkemedel 2')
 st.write("""
 Du kan också välja att använda den mer uppdaterade Google Sheets versionen på:
   https://docs.google.com/spreadsheets/d/1xiBoyy-YyNT0KiVGM4BVH8W0K-Oziw4MnZrlbl9fRvg/edit#gid=0
