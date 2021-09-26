@@ -1,15 +1,15 @@
 import pandas as pd
 import numpy as np
-
-#!jupyter nbextension enable --py widgetsnbextension --sys-prefix
-#!jupyter serverextension enable voila --sys-prefix
-
-#!pip3 install streamlit
 from st_aggrid import AgGrid
 import streamlit as st
 
 
-
+#
+# This little dashboard fetches pediatric anesthesia drug data from a Google Sheets
+# and then displays them as doses in unit/kg or volume (mililiters) to lessen mental load during 
+# anesthesia induction on pediatric cases
+# This is still an BETA and being developed, please do not use in live enviroment
+# No liability will be assumed, every dosage/volume/concentration has to be double checked
 
 sheet_id = "1MCvX4xt4IQaFePdrBn-xoCFBw1DiIVqS2FVQgmdIUVU"
 sheet_name = "Drugsperkg"
