@@ -90,7 +90,7 @@ def calculate_drugs(vikt):
     df['Formula'].replace({"nan": ''}, inplace=True)
     return df
 
-vikt = st.slider("Choose a weight (kg)")
+vikt = st.slider(label="Choose a weight (kg)", value=15.0, min_value=1.0, max_value=100.0, step=0.5)
 st.write("Du har valt", vikt, "kg")
 
 # Create a text element and let the reader know the data is loading.
