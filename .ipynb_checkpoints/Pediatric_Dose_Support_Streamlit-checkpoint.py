@@ -15,6 +15,7 @@ sheet_id = "1MCvX4xt4IQaFePdrBn-xoCFBw1DiIVqS2FVQgmdIUVU"
 sheet_name = "Drugsperkg"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
+@st.cache
 dl = pd.read_csv(url)
 
 st.set_page_config(page_title="BarnAnestesi Läkemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
