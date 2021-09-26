@@ -56,6 +56,7 @@ def calculate_drugs(vikt):
     #Last row to format
     df['Formula'] = df['Formula'].astype(str)
     df['Category'] = df['Category'].astype(str)
+    df['Unit'] = df['Unit'].astype(str)
     #df['Dosage'] = df['Lowdose'].astype(str) + "-" + df['Highdose'].astype(str) + " " + df['Unit'].astype(str)
     #df['Volume'] = df['Mililiters_Low'].astype(str) + "-" + df['Mililiters_High'].astype(str)  + " ml"
 
@@ -64,7 +65,7 @@ def calculate_drugs(vikt):
     df['Mililiters_Low'] = df['Mililiters_Low'].astype(str)
     df['Mililiters_High'] = df['Mililiters_High'].astype(str)
 
-    df['Dosage'] = df[['Lowdose', "Highdose"]].apply(lambda x: x['Lowdose'] + " mg" if x['Highdose'] == " " else x['Lowdose'] + "-" + x['Highdose'] + " mg", axis=1)
+    df['Dosage'] = df[['Lowdose', "Highdose", "Unit"]].apply(lambda x: x['Lowdose'] + " " + x['Unit'] if x['Highdose'] == " " else x['Lowdose'] + "-" + x['Highdose'] + " " + x['Unit'], axis=1)
     df['Volume'] = df[['Mililiters_Low', "Mililiters_High"]].apply(lambda x: x['Mililiters_Low'] + " ml" if x['Mililiters_High'] == " " else x['Mililiters_Low'] + "-" + x['Mililiters_High'] + " ml", axis=1)
     df['Concentration_per_ml'] = df['Concentration_per_ml'].astype(str) + " " + df['Unit'].astype(str) + "/ml"
     df.drop(columns=["Unit", "Mindose", "Maxdose", "Mililiters_Low", "Mililiters_High", "Lowdose", "Highdose"], inplace=True)
@@ -78,7 +79,7 @@ def calculate_drugs(vikt):
     #df['Highdose'].replace({"  ml": ''}, inplace=True)
     #df['Highdose'].replace({"  Joule": ''}, inplace=True)
     df['Volume'].replace({"  ml": ''}, inplace=True)
-    df['Dosage'].replace({"nan mg": ''}, inplace=True)
+    df['Dosage'].replace({"nan nan": ''}, inplace=True)
     df['Conc'].replace({"nan nan/ml": ''}, inplace=True)
     df['Conc'].replace({"nan mg/ml": ''}, inplace=True)
     df['Conc'].replace({"nan ml/ml": ''}, inplace=True)
