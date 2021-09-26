@@ -17,14 +17,14 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 
 dl = pd.read_csv(url)
 
-st.set_page_config(page_title="BarnAnestesi Läkemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
-st.title('BarnAnestesi Läkemedel')
+st.set_page_config(page_title="BarnAnestesi LÃ¤kemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
+st.title('BarnAnestesi LÃ¤kemedel')
 st.write("""
-Du kan också välja att använda den mer uppdaterade Google Sheets versionen på:
+Du kan ocksÃ¥ vÃ¤lja att anvÃ¤nda den mer uppdaterade Google Sheets versionen pÃ¥:
   https://docs.google.com/spreadsheets/d/1xiBoyy-YyNT0KiVGM4BVH8W0K-Oziw4MnZrlbl9fRvg/edit#gid=0
 
-Båda filer är BETA-versioner. Ansvarig anestesiolog har till syvende och sist ansvaret för rätta ordinationer
-Fel kan finnas beräkningarna!
+BÃ¥da filer Ã¤r BETA-versioner. Ansvarig anestesiolog har till syvende och sist ansvaret fÃ¶r rÃ¤tta ordinationer
+Fel kan finnas berÃ¤kningarna!
 """)
 
 #print("Beta version 1. Not to be used in production! No liability will be assumed!")
@@ -66,7 +66,7 @@ def calculate_drugs(vikt):
     df.rename(columns={"Mililiters_Low": "ml_Low", "Mililiters_High": "ml_High", "Concentration_per_ml": "Conc"}, inplace=True)
 
     #display(df[df['Highdose'] == "  mg"]) ### display ceritan drug
-    df['Highdose'].replace({"  µg": ''}, inplace=True)
+    df['Highdose'].replace({"  Âµg": ''}, inplace=True)
     df['Highdose'].replace({"  mg": ''}, inplace=True)
     df['Highdose'].replace({"  ml": ''}, inplace=True)
     df['Highdose'].replace({"  Joule": ''}, inplace=True)
@@ -81,11 +81,11 @@ def calculate_drugs(vikt):
     df['Highdose'].replace({"  nan": ''}, inplace=True)
     df['Category'].replace({"nan": ''}, inplace=True)
     df['Formula'].replace({"nan": ''}, inplace=True)
-    print("Kontrollera att vikten som valts syns på raden nedan (tryck någonstans på dokumentet)")
-    print(f"Visar för vikten: {vikt} kg")
+    print("Kontrollera att vikten som valts syns pÃ¥ raden nedan (tryck nÃ¥gonstans pÃ¥ dokumentet)")
+    print(f"Visar fÃ¶r vikten: {vikt} kg")
     return df
 
-vikt = st.slider("Välj en vikt")
+vikt = st.slider("VÃ¤lj en vikt")
 st.write("Du har valt", vikt, "kg")
 
 # Create a text element and let the reader know the data is loading.
