@@ -27,8 +27,8 @@ Båda filer är BETA-versioner. Ansvarig anestesiolog har till syvende och sist 
 Fel kan finnas beräkningarna!
 """)
 
-print("Beta version 1. Not to be used in production! No liability will be assumed!")
-print("Fyll i vikt nedan")
+#print("Beta version 1. Not to be used in production! No liability will be assumed!")
+#print("Fyll i vikt nedan")
 
 @st.cache
 def calculate_drugs(vikt):
