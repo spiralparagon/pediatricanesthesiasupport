@@ -17,14 +17,14 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 
 dl = pd.read_csv(url)
 
-st.set_page_config(page_title="BarnAnestesi Läkemedel", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
-st.title('BarnAnestesi Läkemedel')
+st.set_page_config(page_title="Pediatric Anesthesia Calculator", page_icon=None, layout='wide', initial_sidebar_state='auto', menu_items=None)
+st.title('BarnAnestesi Kalkylator')
 st.write("""
-Du kan också välja att använda den mer uppdaterade Google Sheets versionen på:
+You can also use the more updated version on Google Sheets:
   https://docs.google.com/spreadsheets/d/1xiBoyy-YyNT0KiVGM4BVH8W0K-Oziw4MnZrlbl9fRvg/edit#gid=0
 
-Båda filerna är BETA-versioner!. Ansvarig anestesiolog har till syvende och sist ansvaret för korrekta ordinationer!
-Fel kan finnas beräkningarna!
+Both files are BETA-versions. No liability will be assumed. Erorrous calculations may be present.
+You have to double check every number!
 """)
 
 #print("Beta version 1. Not to be used in production! No liability will be assumed!")
@@ -35,7 +35,7 @@ def calculate_drugs(vikt):
     df = dl.copy()
     df['Lowdose'] = df['Lowdose']*vikt
     df['Highdose'] = df['Highdose']*vikt
-    
+
     #Support for Minimum dose and Maximum dose, e.g Atropin
     df['Lowdose'] = df[['Lowdose', "Mindose"]].apply(lambda x: x['Mindose'] if x['Lowdose'] < x['Mindose'] else x['Lowdose'], axis=1)
     df['Lowdose'] = df[['Lowdose', "Maxdose"]].apply(lambda x: x['Maxdose'] if x['Lowdose'] > x['Maxdose'] else x['Lowdose'], axis=1)
@@ -44,48 +44,53 @@ def calculate_drugs(vikt):
 
     df['Mililiters_Low'] = df['Lowdose']/df['Concentration_per_ml']
     df['Mililiters_High'] = df['Highdose']/df['Concentration_per_ml']
+
     #Round to nearest decimal 2
     df = df.round(decimals=2)
-    df = df[['Drug', "Concentration_per_ml", "Formula", "Lowdose", "Highdose", "Unit", "Mililiters_Low", "Mililiters_High", "Mindose", "Maxdose", "Category", "Comment"]]
+    df = df[['Drug', "Concentration_per_ml","Lowdose", "Highdose", "Unit", "Mililiters_Low", "Mililiters_High", "Mindose", "Maxdose", "Category", "Formula", "Comment"]]
     df['Highdose'] = df['Highdose'].fillna(" ")
     df['Mililiters_Low'] = df['Mililiters_Low'].fillna(" ")
     df['Mililiters_High'] = df['Mililiters_High'].fillna(" ")
-    df['Comment'] = df['Comment'].fillna(" ")
-    
-    
+    df['Comment'] = df['Comment'].fillna(" ")        
 
     #Last row to format
     df['Formula'] = df['Formula'].astype(str)
     df['Category'] = df['Category'].astype(str)
-    df['Lowdose'] = df['Lowdose'].astype(str) + " " + df['Unit'].astype(str)
-    df['Highdose'] = df['Highdose'].astype(str) + " " + df['Unit'].astype(str)
+    #df['Dosage'] = df['Lowdose'].astype(str) + "-" + df['Highdose'].astype(str) + " " + df['Unit'].astype(str)
+    #df['Volume'] = df['Mililiters_Low'].astype(str) + "-" + df['Mililiters_High'].astype(str)  + " ml"
+
+    df['Lowdose'] = df['Lowdose'].astype(str)
+    df['Highdose'] = df['Highdose'].astype(str)
+    df['Mililiters_Low'] = df['Mililiters_Low'].astype(str)
+    df['Mililiters_High'] = df['Mililiters_High'].astype(str)
+
+    df['Dosage'] = df[['Lowdose', "Highdose"]].apply(lambda x: x['Lowdose'] + " mg" if x['Highdose'] == " " else x['Lowdose'] + "-" + x['Highdose'] + " mg", axis=1)
+    df['Volume'] = df[['Mililiters_Low', "Mililiters_High"]].apply(lambda x: x['Mililiters_Low'] + " ml" if x['Mililiters_High'] == " " else x['Mililiters_Low'] + "-" + x['Mililiters_High'] + " ml", axis=1)
     df['Concentration_per_ml'] = df['Concentration_per_ml'].astype(str) + " " + df['Unit'].astype(str) + "/ml"
-    df['Mililiters_Low'] = df['Mililiters_Low'].astype(str) + " ml"
-    df['Mililiters_High'] = df['Mililiters_High'].astype(str) + " ml"
-    df.drop(columns=["Unit", "Mindose", "Maxdose"], inplace=True)
-    df.rename(columns={"Mililiters_Low": "ml_Low", "Mililiters_High": "ml_High", "Concentration_per_ml": "Conc"}, inplace=True)
+    df.drop(columns=["Unit", "Mindose", "Maxdose", "Mililiters_Low", "Mililiters_High", "Lowdose", "Highdose"], inplace=True)
+    df.rename(columns={"Concentration_per_ml": "Conc"}, inplace=True)
+
+    df = df[['Drug', "Conc","Dosage", "Volume", "Category", "Formula", "Comment"]]
 
     #display(df[df['Highdose'] == "  mg"]) ### display ceritan drug
-    df['Highdose'].replace({"  Ã‚Âµg": ''}, inplace=True)
-    df['Highdose'].replace({"  mg": ''}, inplace=True)
-    df['Highdose'].replace({"  ml": ''}, inplace=True)
-    df['Highdose'].replace({"  Joule": ''}, inplace=True)
-    df['ml_High'].replace({"  ml": ''}, inplace=True)
-    df['ml_Low'].replace({"  ml": ''}, inplace=True)
+    #df['Highdose'].replace({"  Âµg": ''}, inplace=True)
+    #df['Highdose'].replace({"  mg": ''}, inplace=True)
+    #df['Highdose'].replace({"  ml": ''}, inplace=True)
+    #df['Highdose'].replace({"  Joule": ''}, inplace=True)
+    df['Volume'].replace({"  ml": ''}, inplace=True)
+    df['Dosage'].replace({"nan mg": ''}, inplace=True)
     df['Conc'].replace({"nan nan/ml": ''}, inplace=True)
     df['Conc'].replace({"nan mg/ml": ''}, inplace=True)
     df['Conc'].replace({"nan ml/ml": ''}, inplace=True)
     df['Conc'].replace({"nan Joule/ml": ''}, inplace=True)
     df['Conc'].replace({"nan mg FE/ml": ''}, inplace=True)
-    df['Lowdose'].replace({"nan nan": ''}, inplace=True)
-    df['Highdose'].replace({"  nan": ''}, inplace=True)
+    #df['Lowdose'].replace({"nan nan": ''}, inplace=True)
+    #df['Highdose'].replace({"  nan": ''}, inplace=True)
     df['Category'].replace({"nan": ''}, inplace=True)
     df['Formula'].replace({"nan": ''}, inplace=True)
-    print("Kontrollera att vikten som valts syns pÃƒÂ¥ raden nedan (tryck nÃƒÂ¥gonstans pÃƒÂ¥ dokumentet)")
-    print(f"Visar fÃƒÂ¶r vikten: {vikt} kg")
     return df
 
-vikt = st.slider("VÃƒÂ¤lj en vikt")
+vikt = st.slider("Choose a weight (kg)")
 st.write("Du har valt", vikt, "kg")
 
 # Create a text element and let the reader know the data is loading.
